@@ -1,4 +1,4 @@
-Tema constă într-o aplicație scrisă în c++ în cadrul căreia să se abordeze următoarele subiecte discutate:
+﻿Tema constă într-o aplicație scrisă în c++ în cadrul căreia să se abordeze următoarele subiecte discutate:
 1. build folosind cmake respectând structura discutată la laborator 
 2. încapsulare 
 3. inițializarea membrilor din constructor 
