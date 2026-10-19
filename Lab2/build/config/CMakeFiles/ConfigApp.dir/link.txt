@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/ConfigApp.dir/main.cpp.o -o ConfigApp  ../library_project/libMathLib.a 

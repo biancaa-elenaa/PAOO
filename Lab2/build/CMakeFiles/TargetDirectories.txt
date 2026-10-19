@@ -1,0 +1,8 @@
+/home/bianca/PAOO/Lab2/build/CMakeFiles/edit_cache.dir
+/home/bianca/PAOO/Lab2/build/CMakeFiles/rebuild_cache.dir
+/home/bianca/PAOO/Lab2/build/library_project/CMakeFiles/MathLib.dir
+/home/bianca/PAOO/Lab2/build/library_project/CMakeFiles/edit_cache.dir
+/home/bianca/PAOO/Lab2/build/library_project/CMakeFiles/rebuild_cache.dir
+/home/bianca/PAOO/Lab2/build/config/CMakeFiles/ConfigApp.dir
+/home/bianca/PAOO/Lab2/build/config/CMakeFiles/edit_cache.dir
+/home/bianca/PAOO/Lab2/build/config/CMakeFiles/rebuild_cache.dir
