@@ -1,0 +1,8 @@
+/home/bianca/PAOO/Tema_3/build/CMakeFiles/edit_cache.dir
+/home/bianca/PAOO/Tema_3/build/CMakeFiles/rebuild_cache.dir
+/home/bianca/PAOO/Tema_3/build/lib_buffer/CMakeFiles/BufferLib.dir
+/home/bianca/PAOO/Tema_3/build/lib_buffer/CMakeFiles/edit_cache.dir
+/home/bianca/PAOO/Tema_3/build/lib_buffer/CMakeFiles/rebuild_cache.dir
+/home/bianca/PAOO/Tema_3/build/src/CMakeFiles/Src.dir
+/home/bianca/PAOO/Tema_3/build/src/CMakeFiles/edit_cache.dir
+/home/bianca/PAOO/Tema_3/build/src/CMakeFiles/rebuild_cache.dir

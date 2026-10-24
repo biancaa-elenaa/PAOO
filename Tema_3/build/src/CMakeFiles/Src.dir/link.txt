@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/Src.dir/main.cpp.o -o Src  ../lib_buffer/libBufferLib.a 
