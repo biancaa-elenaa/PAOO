@@ -13,14 +13,14 @@ int main()
     std::cout <<"\n---Copy Constructor---\n";
     DataBuffer buf2 = buf1;
     buf2.setValue(0, 999);
-    std::cout << "Buf1 dupa modificarea Buf2 ";
+    std::cout << "Bufer 1 dupa modificarea Buffer 2:  ";
     buf1.print();
-    std::cout << "Buf2 modificat";
+    std::cout << "Buffer 2 modificat: ";
     buf2.print();
 
     std::cout << "\n--- Move Constructor---\n";
     DataBuffer buf3 = std::move(buf1);
-    std::cout<< "Buf3 - preluat de la buf1";
+    std::cout<< "Buffer 3 - preluat de la buffer 1: ";
     buf3.print();
 
     std::cout << "\n---Iesire din program (apelare destructor)--\n";
