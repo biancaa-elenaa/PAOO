@@ -1,0 +1,7 @@
+/mnt/d/CTI-C/An4/PAOO/Tema_4/build/CMakeFiles/edit_cache.dir
+/mnt/d/CTI-C/An4/PAOO/Tema_4/build/CMakeFiles/rebuild_cache.dir
+/mnt/d/CTI-C/An4/PAOO/Tema_4/build/effective_lib/CMakeFiles/edit_cache.dir
+/mnt/d/CTI-C/An4/PAOO/Tema_4/build/effective_lib/CMakeFiles/rebuild_cache.dir
+/mnt/d/CTI-C/An4/PAOO/Tema_4/build/app_main/CMakeFiles/App.dir
+/mnt/d/CTI-C/An4/PAOO/Tema_4/build/app_main/CMakeFiles/edit_cache.dir
+/mnt/d/CTI-C/An4/PAOO/Tema_4/build/app_main/CMakeFiles/rebuild_cache.dir

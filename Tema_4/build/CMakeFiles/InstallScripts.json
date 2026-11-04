@@ -1,0 +1,9 @@
+{
+	"InstallScripts" : 
+	[
+		"/mnt/d/CTI-C/An4/PAOO/Tema_4/build/cmake_install.cmake",
+		"/mnt/d/CTI-C/An4/PAOO/Tema_4/build/effective_lib/cmake_install.cmake",
+		"/mnt/d/CTI-C/An4/PAOO/Tema_4/build/app_main/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
