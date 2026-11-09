@@ -2,48 +2,75 @@
 #include "effective_items.h"
 
 int main() {
-    std::cout << "=== PROIECT COMPLEX: EFFECTIVE C++ (ITEMS 4, 5, 6) ===\n\n";
-
+    
     // ----------------------------------------------------
-    // EXEMPLE SI COMENTARII PENTRU ITEM 4:
+    // ITEM 4:
     // ----------------------------------------------------
-    std::cout << "--- DEMO ITEM 4: Initializare vs Atribuire ---\n";
-    std::string primaryLocation = "/etc/sensors.conf";
-    SensorDevice sensor("Termometru-Lab", 402, 10);
-    // Explicație: Membrii sunt construiti direct din argumente prin lista de initializare,
-    // evitand dubla initializare (creare goala + suprascriere ulterioara), obligatorie pentru const/referinte.
+    std::cout << "--- ITEM 4: Initializare vs Atribuire ---\n";
+    // --- REGULA 1: Inițializarea tipurilor primitive ---
+    // Regula din Item 4: Tipurile built-in (int, double, pointeri) locale nu sunt 
+    // inițializate automat de C++ și conțin "garbage values".Trebuie initializate manual.
+    int localCounter = 0; 
+    double thresholdLimit = 25.5;
+    std::cout << "1. Tipurile primitive locale au fost inițializate manual:\n"
+              << "   - counter = " << localCounter << "\n"
+              << "   - threshold = " << thresholdLimit << "\n\n";
 
+    // --- REGULA 2: Lista de inițializare a membrilor ---
+    std::cout << "2. Testare membrii prin lista de inițializare:\n";
+    AdvancedSensor sensor("Sensor-Alpha", 99);
+
+    // --- REGULA 3: Ordinea de inițializare în clasă ---
+    std::cout << "\n3. Testare ordinea de inițializare (bazată pe declarare):\n";
+    SensorReading reading(50);
 
     // ----------------------------------------------------
     // EXEMPLE SI COMENTARII PENTRU ITEM 5:
     // ----------------------------------------------------
-    std::cout << "\n--- DEMO ITEM 5: Functii generate tacit si limitari ---\n";
-    std::string path1 = "config_v1.json";
-    std::string path2 = "config_v2.json";
+    std::cout << "\n--- ITEM 5: Ce scrie C++ în tăcere ---\n";
     
-    ConfigurationManager cfg1(path1, 3);
-    ConfigurationManager cfg2(path2, 5);
-    cfg1.showConfig();
-    cfg2.showConfig();
+    // C++ generează constructorul implicit și destructorul pentru această clasă goală:
+    EmptySignalBox box1; 
+    
+    // C++ generează constructorul de copiere silențios (copiere membru cu membru):
+    EmptySignalBox box2 = box1; 
+    std::cout << "[Item 5] Obiectul box2 a fost copiat folosind constructorul generat automat de C++.\n";
 
-    //cfg1=cfg2;
-
-    std::cout << "[Item 5 Detaliu]: Daca am incerca 'cfg1 = cfg2;', codul nu ar compila.\n"
-              << "Motivul: Clasa contine referinte si membri const, fortand compilatorul\n"
-              << "sa marcheze operatorul de atribuire (=) ca fiind sters implicit.\n";
-
+    // Testare limitare operator= (Item 5):
+    std::string ip1 = "192.168.1.10";
+    std::string ip2 = "10.0.0.5";
+    
+    NetworkConfiguration net1(ip1, 8080);
+    NetworkConfiguration net2(ip2, 9090);
+    
+    net1.display();
+    net2.display();
+    
+    //net1 = net2;
+    std::cout << "\n[Item 5 Notă importantă]: Dacă ai încerca să scrii 'net1 = net2;',\n"
+              << "compilatorul ar da eroare pentru că operatorul= este șters automat\n"
+              << "datorită prezenței referinței și a membrului const[cite: 23].\n";
 
     // ----------------------------------------------------
     // EXEMPLE SI COMENTARII PENTRU ITEM 6:
     // ----------------------------------------------------
-    std::cout << "\n--- DEMO ITEM 6: Interzicerea explicita a copierii ---\n";
-    UniqueDatabaseConnection dbConn("postgresql://localhost:5432/prod");
-    dbConn.executeQuery("SELECT * FROM users;");
+    std::cout << "\n---ITEM 6: Interzicerea explicita a copierii ---\n";
+    UniqueDatabaseConnection dbConn("postgresql://localhost:5432/prod_db");
+    dbConn.executeQuery("SELECT * FROM sensors;");
 
-    std::cout << "[Item 6 Detaliu]: Incercarea de a face 'UniqueDatabaseConnection dbCopy = dbConn;' \n"
-              << "sau 'dbConn2 = dbConn;' va opri compilarea imediat datorita clauzei '= delete'.\n"
-              << "Astfel evitam bug-uri critice generate de copierea accidentali a unor entitati unice.\n\n";
+    /* 
+       DACĂ AI DECOMENTA URMĂTOARELE LINII, PROGRAMUL NU AR COMPILA:
+       
+       UniqueDatabaseConnection dbCopy = dbConn; // Eroare: constructorul de copiere este șters!
+       dbConn = dbCopy;                         // Eroare: operatorul= este șters!
+       
+       Motivul (Item 6): 
+       - Abordarea modernă (C++11): Folosirea clauzei '= delete' blochează copierea de la compilare[cite: 24].
+       - Abordarea istorică (C++98): Declararea constructorului de copiere în zona 'private' (fără implementare)[cite: 24].
+    */
 
-    std::cout << "=== FINALUL DEMONSTRATIEI COMPLEXE ===\n";
+    std::cout << "[Item 6 Notă]: Încercarea de a copia obiectul UniqueDatabaseConnection\n"
+              << "ar fi oprită instant de compilator datorită clauzelor '= delete'.\n";
+
     return 0;
 }

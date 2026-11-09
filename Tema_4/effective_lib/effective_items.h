@@ -3,40 +3,68 @@
 #include <iostream>
 #include <vector>
 
-// --- ITEM 4: Initializarea corecta si ordinea membrilor ---
-class SensorDevice {
-    std::string deviceName;
-    int sensorId;
-    double* readings; // Resursa alocata pe heap
+// --- ITEM 4: 1. Ordinea de inițializare a membrilor ---
+// Regulă din Effective C++: Membrii unei clase sunt întotdeauna inițializați în 
+// ordinea în care sunt DECLARAȚI în clasă, nu în ordinea în care apar în lista constructorului[cite: 21].
+class SensorReading {
 public:
-    // Corect: Folosirea listei de initializare (Member Initialization List).
-    // Ordinea de initializare este data de ordinea declararii in clasa (deviceName, apoi sensorId, apoi readings).
-    SensorDevice(const std::string& name, int id, size_t poolSize)
-        : deviceName(name), sensorId(id), readings(new double[poolSize]{0.0}) {
-        std::cout << "[Item 4] SensorDevice '" << deviceName << "' initializat corect prin lista.\n";
-    }
+    int rawValue;
+    int processedValue;
 
-    ~SensorDevice() {
-        delete[] readings;
+    // Chiar dacă în listă am pus processedValue primul, rawValue se va inițializa primul
+    // deoarece este declarat primul în clasă.
+    SensorReading(int val) : rawValue(val), processedValue(rawValue * 2) {
+        std::cout << "[Item 4 - Ordine] SensorReading creat. rawValue: " << rawValue 
+                  << ", processedValue: " << processedValue << "\n";
     }
 };
 
-// --- ITEM 5: Functii generate de compilator & Operatorul = sters ---
-class ConfigurationManager {
-    std::string& configPath; // Referinta (nu poate fi reatribuita dupa constructie)
-    const int maxRetries;    // Membru constant (nu poate fi modificat prin atribuire)
+// --- ITEM 4: 2. Lista de inițializare vs Atribuire în corp ---
+class AdvancedSensor {
+    std::string sensorName;
+    int calibrationCode;
 public:
-    ConfigurationManager(std::string& path, int retries)
-        : configPath(path), maxRetries(retries) {}
+    // Corect: Folosirea listei de inițializare construiește membrul direct din argument (1 singur pas).
+    // Dacă am fi atribuit în corp, membrul ar fi fost mai întâi creat gol, apoi suprascris (2 pași)[cite: 20].
+    AdvancedSensor(const std::string& name, int code) 
+        : sensorName(name), calibrationCode(code) {
+        //sensorName = name; - gresit - Membrul clasei ar fi fost mai întâi creați gol, (prin constructorul lor implicit),
+        //  iar abia apoi li s-ar fi dat valoarea în corpul constructorului (însemnând doi pași / dublă operațiune).
+        std::cout << "[Item 4 - Lista] AdvancedSensor inițializat corect prin lista de inițializare.\n";
+    }
+};
 
-    void showConfig() const {
-        std::cout << "[Item 5] Config path: " << configPath << ", Retries: " << maxRetries << "\n";
+// ==========================================
+// ITEM 5: Funcțiile generate silențios de C++
+// ==========================================
+
+// Clasa goală pe care C++ o umple automat cu funcții implicite
+class EmptySignalBox {
+    // Dacă nu scrii nimic, C++ generează în mod silențios (dacă sunt folosite):
+    // 1. Constructor implicit (Default constructor)
+    // 2. Destructor
+    // 3. Constructor de copiere (Copy constructor - face shallow copy / bit-cu-bit)
+    // 4. Operator de atribuire prin copiere (Copy assignment operator)[cite: 22]
+};
+
+// Exemplu unde C++ REFUZĂ să genereze operatorul de atribuire (operator=)
+class NetworkConfiguration {
+    std::string& serverIp; // Referință: o dată legată, nu mai poate fi schimbată
+    const int portNumber;  // Membru const: nu poate primi altă valoare prin atribuire
+public:
+    NetworkConfiguration(std::string& ip, int port) 
+        : serverIp(ip), portNumber(port) {
+        std::cout << "[Item 5] NetworkConfiguration creat cu IP și port " << portNumber << "\n";
     }
 
-    // NOTA EXPLICATIVA: 
-    // Din cauza prezentei unei referinte si a unui membru const, compilatorul 
-    // defineste automat operatorul de atribuire (operator=) ca fiind STERS (= delete).
-    // Incercarea de a face 'config1 = config2;' va genera o eroare directa de compilare.
+    void display() const {
+        std::cout << "[Item 5] Configurație rețea -> Port: " << portNumber << "\n";
+    }
+
+    // DE CE NU GENEREAZĂ C++ operator= AICI?
+    // Conform Item 5: Dacă o clasă conține referințe (&) sau membri constanți (const), 
+    // compilatorul marchează operatorul de atribuire prin copiere ca fiind ȘTERS (= delete).
+    // Motivul: O referință nu poate fi reatribuită către un alt obiect, iar un const nu poate fi suprascris[cite: 23].
 };
 
 // --- ITEM 6: Interzicerea explicita a copierii (= delete) ---
@@ -51,11 +79,20 @@ public:
         std::cout << "[Item 6] Conexiunea inchisa.\n";
     }
 
-    // O conexiune la baza de date este unica; copierea nu are sens (ar duce la dubla inchidere/conflict).
-    // Prin urmare, interzicem explicit constructorul de copiere si operatorul de atribuire folosind C++11.
+    // --- ABORDAREA MODERNĂ (C++11 și ulterior) ---
+    // Folosirea lui '= delete' blochează copierea direct la nivelul compilatorului.
     UniqueDatabaseConnection(const UniqueDatabaseConnection&) = delete;
     UniqueDatabaseConnection& operator=(const UniqueDatabaseConnection&) = delete;
 
+    /* 
+       --- ABORDAREA ISTORICĂ (C++98 / din cartea originală Effective C++) ---
+       Dacă ai folosi standardul vechi, blocarea copierii s-ar face mutând 
+       funcțiile în zona 'private' și fără a le scrie corpul (implementarea)[cite: 24]:
+       
+       private:
+           UniqueDatabaseConnection(const UniqueDatabaseConnection&);
+           UniqueDatabaseConnection& operator=(const UniqueDatabaseConnection&);
+    */
     void executeQuery(const std::string& query) const {
         std::cout << "[Item 6 Executare] " << query << " pe conexiunea " << connectionString << "\n";
     }
